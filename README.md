@@ -18,10 +18,10 @@ Here's a very straightforward guide to getting you started.
 
 If you don't have one already, go to [Discord's Developer Portal](https://discord.com/developers/applications) and create a new app.
 
-And, make sure to go to `Settings` and `Bot` and setup the Bot user. because you will need the bot `TOKEN`.
+And, make sure to go to `Settings` and `Bot` and set up the Bot user. Because you will need the bot `TOKEN`.
 
-Now, you need to register new application command to test the bot.
-This is currently only possible via HTTP endpoint.
+Now, you need to register a new application command to test the bot.
+This is currently only possible via a HTTP endpoint.
 
 ```python
 # global commands are cached and only update every hour
@@ -166,16 +166,17 @@ But if you wan't to understand it more:
   
 Replace `YOUR_APP_PUBLIC_KEY_HERE` with your app public key also visible through **General Information** 
 
-Now deploy the script to Lambda **(don't forget about packing the security library)**
+Then deploy the script to Lambda **(don't forget about packing the security library)**
+
+---
 
 Go back to the dev portal and try to save the endpoint again, This time it should save without any errors.
-
-if not then something is wrong, check the steps again until you get it working.
-
-If it saves correctly, go to your discord server and type `/bleb` in chat.
-IT should work and respond with `Hello, World.`.
+  - If it saves correctly, go to your discord server and type `/bleb` in chat. It should work and respond with `Hello, World.`.
+  - If not then something is wrong, check the steps again until you get it working.
 
 To add more command to the lambda function edit `command_handler(body)`.
 
-You **must** respond to any requests within **3 seconds** (There’s no way to increase this time).
+---
+
+You **must** respond to any request within **3 seconds** (There’s no way to increase this time).
 Discord has [no plans](https://github.com/discord/discord-api-docs/issues/2352) to change this.
