@@ -18,10 +18,19 @@ Here's a very straightforward guide to getting you started.
 
 If you don't have one already, go to [Discord's Developer Portal](https://discord.com/developers/applications) and create a new app.
 
-And, make sure to go to `Settings` and `Bot` and set up the Bot user. Because you will need the bot `TOKEN`.
+<br>
 
-Now, you need to register a new application command to test the bot.
-This is currently only possible via a HTTP endpoint.
+Use this URL after repleacing `{APP_ID}` with your own and use it to invite the bot into your server.
+
+```https://discord.com/oauth2/authorize?client_id={APP_ID}&scope=applications.commands```
+
+<br>
+
+Now, you need to register a new slash command to test the bot.  
+
+Discord can't automatticly figure out what commands you app has, so you need to tell it each command available.  
+
+There is no UI for that, it is currently only possible via a HTTP endpoint.
 
 ```python
 # global commands are cached and only update every hour
@@ -44,24 +53,20 @@ response = requests.post(url, headers={
 print(response.json())
 ```
 
-<h6 align="center"><i>(This is a script you keep to yourself and run locally each time you want to create/update your application's commands)</i></h6>
+> **Note** This is a script you keep to yourself and run locally each time you want to create a new command or update your existing ones.
 
 <br>
 
-Your `App ID` is visible through **General Information** in your app dev portal.
-
-To get a `Guild ID`, go to your discord client and enable **Developer Mode** in the **Advanced** Settings,
+- `APP_ID` is visible through **General Information** in your app dev portal.  
+- `BOT_TOKEN` is in **Bot** 
+- To get your `GUILD_ID`, go to your discord client and enable **Developer Mode** in the **Advanced** Settings,
 then go to the server and right-click on the sever's name in the top-left. And now should see a new entry in the context menu called **Copy ID**.
 
-`Bot Token` is also visible through **Bot** in the app dev portal.
+If you are using guild commands *(You should for testing commands and for private bots)*. before running the script, make sure that the bot was alreay invited into the server that you are using the GUILD_ID of.
 
-If you are creating if you are using guild commands *(You should for testing commands and for private bots)*.
-Then before running the script you need to go to **OAuth2** then **OAuth2 URL Generator**. Click `applications.commands` and go to the generated URL to authorize the app.
-Select the server you just copied the ID of, or the script won't work.
+You should now be able to go the the server type `/` in the chat and see the command you' created, if not then something is wrong, scroll up amd try again until you can.
 
-
-You should be able now to go the the server type `/` in the chat and see the command you' created, if not then something is wrong, try again until you can.
-
+Commands can accept string and number inputs, But to learn more about setting up commands, check the offical docs or Google for a more specific guide. <https://discord.com/developers/docs/interactions/application-commands#application-command-object> 
 
 ### 2. The AWS Lambda Function
 
