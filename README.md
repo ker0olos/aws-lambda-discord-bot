@@ -191,4 +191,4 @@ To add more command to the lambda function edit `command_handler(body)`.
 
 ---
 
-You **must** respond to any request within **3 seconds** (There’s no way to increase this time). [Discord has no plans to change this](https://github.com/discord/discord-api-docs/issues/2352).
+You **must** respond to any request within **3 seconds** (There’s no way to increase this time).
