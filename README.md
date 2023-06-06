@@ -30,43 +30,51 @@ Now, you need to register a new slash command to test the bot.
 
 Discord can't automatticly figure out what commands you app has, so you need to tell it each command available.  
 
-There is no UI for that, it is currently only possible via a HTTP endpoint.
+There is no UI for that, it's currently only possible via a HTTP endpoint.
 
 ```python
+import requests
+
+APP_ID = "APP_ID"
+SERVER_ID = "SERVER_ID"
+BOT_TOKEN = "BOT_TOKEN"
+
 # global commands are cached and only update every hour
-# url = f'https://discord.com/api/v8/applications/{APP_ID}/commands'
+# url = f'https://discord.com/api/v10/applications/{APP_ID}/commands'
 
-# while guild commands update instantly
+# while server commands update instantly
 # they're much better for testing
-url = f'https://discord.com/api/v8/applications/{APP_ID}/guilds/{GUILD_ID}/commands'
+url = f'https://discord.com/api/v10/applications/{APP_ID}/guilds/{SERVER_ID}/commands'
 
-json = {
-  'name': 'bleb',
-  'description': 'Test command.',
-  'options': []
-}
+json = [
+  {
+    'name': 'bleb',
+    'description': 'Test command.',
+    'options': []
+  }
+]
 
-response = requests.post(url, headers={
+response = requests.put(url, headers={
   'Authorization': f'Bot {BOT_TOKEN}'
 }, json=json)
 
 print(response.json())
 ```
 
-> **Note** This is a script you keep to yourself and run locally each time you want to create a new command or update your existing ones.
+> **Note** This is a script you keep to yourself and run locally every time you want to create a new command or update your existing ones.
 
 <br>
 
 - `APP_ID` is visible through **General Information** in your app dev portal.  
 - `BOT_TOKEN` is in **Bot** 
-- To get your `GUILD_ID`, go to your discord client and enable **Developer Mode** in the **Advanced** Settings,
-then go to the server and right-click on the sever's name in the top-left. And now should see a new entry in the context menu called **Copy ID**.
+- To get your `SERVER_ID`, go to your discord client and enable **Developer Mode** in the **Advanced** Settings,
+then go to the server and right-click on the sever's name in the top-left. And now should see a new entry in the context menu called **Copy Server ID**.
 
-If you are using guild commands *(You should for testing commands and for private bots)*. before running the script, make sure that the bot was alreay invited into the server that you are using the GUILD_ID of.
+If you are using server commands *(You should for testing commands and for private bots)*. before running the script, make sure that the bot was alreay added to your server.
 
 You should now be able to go the the server type `/` in the chat and see the command you' created, if not then something is wrong, scroll up amd try again until you can.
 
-Commands can accept string and number inputs, But to learn more about setting up commands, check the offical docs or Google for a more specific guide. <https://discord.com/developers/docs/interactions/application-commands#application-command-object> 
+Commands can accept string and number inputs, But to learn more about setting up commands, check the offical docs or search for a more specific guide. <https://discord.com/developers/docs/interactions/application-commands#application-command-object> 
 
 ### 2. The AWS Lambda Function
 
@@ -183,5 +191,4 @@ To add more command to the lambda function edit `command_handler(body)`.
 
 ---
 
-You **must** respond to any request within **3 seconds** (There’s no way to increase this time).
-Discord has [no plans](https://github.com/discord/discord-api-docs/issues/2352) to change this.
+You **must** respond to any request within **3 seconds** (There’s no way to increase this time). [Discord has no plans to change this](https://github.com/discord/discord-api-docs/issues/2352).
