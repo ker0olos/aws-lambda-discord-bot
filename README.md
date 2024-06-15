@@ -120,7 +120,7 @@ def lambda_handler(event, context):
 
     verify_key = VerifyKey(bytes.fromhex(PUBLIC_KEY))
 
-    message = timestamp + json.dumps(body, separators=(',', ':'))
+    message = timestamp + event['body']
     
     try:
       verify_key.verify(message.encode(), signature=bytes.fromhex(signature))
