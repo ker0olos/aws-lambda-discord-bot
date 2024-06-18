@@ -157,6 +157,7 @@ def command_handler(body):
   if command == 'bleb':
     return {
       'statusCode': 200,
+      'headers' : {'Content-Type': 'application/json'},
       'body': json.dumps({
         'type': 4,
         'data': {
