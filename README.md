@@ -193,3 +193,52 @@ To add more command to the lambda function edit `command_handler(body)`.
 ---
 
 You **must** respond to any request within **3 seconds** (There’s no way to increase this time).
+If your request will take longer than 3 seconds (i.e. an LLM query), you will need to acknowledge the user's interaction.
+
+One method of acknowledging a request is to send back a message to user (like "Loading..") and edit the response later. Discord makes this possible by assigning an Interactions ID and an Interactions token to each interaction that expires after 15 minutes. We will be using this to our advantage.
+
+Here is a function to immediately send something back to the user
+```python
+def send(message, id, token):
+    url = f"https://discord.com/api/interactions/{id}/{token}/callback"
+
+    callback_data = {
+        "type": 4,
+        "data": {
+            "content": message
+        }
+    }
+    response = requests.post(url, json=callback_data)
+```
+
+In your `command_handler`, use the function as such.
+
+```python
+message = "Loading.." # Loading message that you'd want to send back to the user.
+send(message, body['id'], body['token'])
+```
+
+To update the message after sending out an acknowledgement, use the `update` function below
+
+```python
+def update(message, token, app_id):
+    url = f"https://discord.com/api/webhooks/{app_id}/{token}/messages/@original"
+
+    # JSON data to send with the request
+    data = {
+        "content": message
+    }
+
+    # Send the PATCH request
+    response = requests.patch(url, json=data)
+```
+
+In your `command_handler`, use the function as such
+
+```python
+updated_message = "..."
+DISCORD_BOT_ID = "...." # Please set your discord bot ID as an environmental variable or manually
+
+update(updated_message, body['token'], DISCORD_BOT_ID)
+```
+
